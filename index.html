@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feliz Dia dos Namorados, Meu Amor</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&family=Courier+Prime&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -24,13 +24,78 @@
       align-items: center;
       min-height: 100vh;
       overflow-x: hidden;
-      position: relative;
     }
 
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+
+    /* =========================================
+       1. ENVELOPE DE ENTRADA (SPLASH SCREEN)
+       ========================================= */
+    #envelope-screen {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #1a0b14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .envelope-container {
+      text-align: center;
+      background: linear-gradient(135deg, #ff8fb3, #ff477e);
+      padding: 40px 60px;
+      border-radius: 10px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      border-bottom: 10px solid #d81b60;
+      position: relative;
+    }
+    .envelope-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      border-top: 50px solid rgba(255,255,255,0.2);
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+    }
+    .envelope-container h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3em;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .open-btn {
+      background: #fff;
+      color: #ff477e;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .open-btn:hover {
+      transform: scale(1.1);
+    }
+    .hide-envelope {
+      opacity: 0;
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+
+    #main-content {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
     }
 
     /* Chuva de Corações */
@@ -46,20 +111,21 @@
       to { transform: translateY(110vh) rotate(360deg); }
     }
 
-    /* Container Principal para ficar acima dos corações */
-    .content-wrapper {
+    /* Efeito Glassmorphism Global */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      border-radius: 20px;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
     }
 
     header {
       text-align: center;
       margin-top: 60px;
       margin-bottom: 20px;
-      animation: fadeInDown 1.5s ease;
     }
     header h1 {
       font-family: 'Dancing Script', cursive;
@@ -74,14 +140,43 @@
       color: #ffb6c1;
     }
 
-    /* Efeito Glassmorphism Global */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      border-radius: 20px;
+    /* =========================================
+       2. CONTADOR DE TEMPO JUNTOS
+       ========================================= */
+    .counter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0 40px 0;
+      text-align: center;
+      z-index: 1;
+    }
+    .counter-box {
+      background: rgba(255, 111, 145, 0.2);
+      border: 1px solid rgba(255, 111, 145, 0.4);
+      padding: 15px;
+      border-radius: 15px;
+      min-width: 80px;
+    }
+    .counter-box span {
+      display: block;
+      font-size: 2em;
+      font-weight: bold;
+      color: #fff;
+    }
+    .counter-box p {
+      font-size: 0.8em;
+      text-transform: uppercase;
+      color: #ffb6c1;
+      margin-top: 5px;
+    }
+    .counter-title {
+      width: 100%;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5em;
+      color: #ff8fb3;
+      margin-bottom: 10px;
     }
 
     /* Galeria Principal */
@@ -89,19 +184,15 @@
       margin: 20px;
       width: 90%;
       max-width: 600px;
-      animation: fadeIn 2s ease;
+      z-index: 1;
     }
     .hero-image img {
       width: 100%;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transition: transform 0.4s ease;
-    }
-    .hero-image img:hover {
-      transform: scale(1.02);
     }
 
-    /* Mensagem Principal */
+    /* Mensagem */
     .message {
       margin: 40px 20px;
       max-width: 800px;
@@ -110,33 +201,22 @@
       font-size: 1.15em;
       text-align: justify;
     }
-    .signature {
-      margin-top: 40px;
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.2em;
-      text-align: right;
-      color: #ffb6c1;
-    }
 
     /* Linha do Tempo Interativa */
     .timeline {
       width: 90%;
       max-width: 800px;
-      margin: 50px 0;
+      margin: 30px 0;
       border-left: 4px solid #ff6f91;
       padding-left: 20px;
       display: flex;
       flex-direction: column;
       gap: 30px;
+      z-index: 1;
     }
     .timeline-item {
       position: relative;
       padding: 20px;
-      transition: transform 0.3s ease;
-    }
-    .timeline-item:hover {
-      transform: translateX(10px);
-      background: rgba(255, 111, 145, 0.1);
     }
     .timeline-item::before {
       content: '';
@@ -156,7 +236,165 @@
       font-size: 2em;
     }
 
-    /* Cartões Interativos (Flip Cards) com Novas Mensagens */
+    /* =========================================
+       3. PASSAGEM AÉREA (O FUTURO)
+       ========================================= */
+    .boarding-pass {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+      position: relative;
+      margin-top: 10px;
+      border: 2px dashed #ff8fb3;
+    }
+    .bp-header {
+      background: #ff477e;
+      color: white;
+      padding: 10px 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .bp-body {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bp-route {
+      text-align: center;
+    }
+    .bp-route h2 {
+      font-size: 2em;
+      margin: 0;
+      color: #d81b60;
+    }
+    .bp-route p {
+      font-size: 0.8em;
+      color: #666;
+      text-transform: uppercase;
+    }
+    .bp-icon {
+      font-size: 2em;
+      color: #ff477e;
+    }
+    .bp-details {
+      background: rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.9em;
+      border-top: 1px dashed #ccc;
+    }
+    .bp-details strong { color: #d81b60; }
+
+    /* =========================================
+       NOVO: O MAPA DOS NOSSOS SONHOS
+       ========================================= */
+    .map-section {
+      width: 90%;
+      max-width: 800px;
+      margin: 50px 0;
+      z-index: 1;
+      text-align: center;
+    }
+    .map-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg') no-repeat center center;
+      background-size: contain;
+      margin-top: 20px;
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .pin {
+      position: absolute;
+      font-size: 2em;
+      cursor: pointer;
+      transition: transform 0.3s;
+      text-shadow: 0 0 10px rgba(255, 111, 145, 0.8);
+    }
+    .pin:hover {
+      transform: scale(1.3) translateY(-10px);
+    }
+    .pin .tooltip {
+      visibility: hidden;
+      width: 220px;
+      background: rgba(216, 27, 96, 0.95);
+      color: #fff;
+      text-align: center;
+      border-radius: 10px;
+      padding: 15px;
+      position: absolute;
+      z-index: 10;
+      bottom: 130%;
+      left: 50%;
+      margin-left: -110px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.45em; /* Reduzindo por conta do em do pin */
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      pointer-events: none;
+    }
+    .pin .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(216, 27, 96, 0.95) transparent transparent transparent;
+    }
+    .pin:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .map-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3em;
+      color: #ff8fb3;
+    }
+
+    /* =========================================
+       4. BOTÃO GERADOR DE FRASES
+       ========================================= */
+    .generator-section {
+      text-align: center;
+      margin: 50px 20px;
+      z-index: 1;
+    }
+    .love-btn {
+      background: linear-gradient(45deg, #ff477e, #ff8fb3);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 5px 20px rgba(255, 111, 145, 0.5);
+      transition: transform 0.2s;
+    }
+    .love-btn:active {
+      transform: scale(0.95);
+    }
+    #reason-display {
+      margin-top: 20px;
+      font-size: 1.5em;
+      font-family: 'Dancing Script', cursive;
+      color: #ffb6c1;
+      min-height: 50px;
+      transition: opacity 0.3s;
+    }
+
+    /* Flip Cards */
     .cards-container {
       display: flex;
       flex-wrap: wrap;
@@ -165,6 +403,7 @@
       width: 90%;
       max-width: 1000px;
       margin: 50px 0;
+      z-index: 1;
     }
     .flip-card {
       background-color: transparent;
@@ -226,39 +465,20 @@
       line-height: 1.6;
     }
 
-    /* Botão de Música Fixo */
-    .music-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #ff6f91;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 111, 145, 0.6);
-      transition: transform 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .music-btn:hover {
-      transform: scale(1.1);
+    .signature {
+      margin-top: 40px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.2em;
+      text-align: right;
+      color: #ffb6c1;
     }
 
     footer {
       margin: 40px 0 30px 0;
       color: rgba(255,255,255,0.6);
+      z-index: 1;
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -267,7 +487,10 @@
     @media (max-width: 600px) {
       header h1 { font-size: 3em; }
       .message { padding: 25px; }
-      .timeline { width: 95%; margin-left: 10px; }
+      .bp-body { flex-direction: column; gap: 10px; }
+      .bp-icon { transform: rotate(90deg); }
+      .map-container { height: 250px; }
+      .pin { font-size: 1.5em; }
     }
   </style>
 </head>
@@ -278,144 +501,248 @@
     <source src="sua-musica.mp3" type="audio/mpeg">
   </audio>
 
-  <button class="music-btn" id="musicToggle" onclick="toggleMusic()">▶️</button>
+  <!-- 1. TELA DO ENVELOPE -->
+  <div id="envelope-screen">
+    <div class="envelope-container">
+      <h2>Para o meu amor...</h2>
+      <button class="open-btn" onclick="openEnvelope()">Abrir Surpresa ❤️</button>
+    </div>
+  </div>
 
-  <div class="content-wrapper">
+  <!-- CONTEÚDO PRINCIPAL (Fica oculto até abrir o envelope) -->
+  <div id="main-content">
     
     <header>
       <h1>Meu Amor</h1>
       <p>Feliz Dia dos Namorados</p>
     </header>
 
+    <!-- 2. CONTADOR DE TEMPO -->
+    <div class="counter-container">
+      <div class="counter-title">Nosso amor começou há:</div>
+      <div class="counter-box"><span id="c-years">0</span><p>Anos</p></div>
+      <div class="counter-box"><span id="c-months">0</span><p>Meses</p></div>
+      <div class="counter-box"><span id="c-days">0</span><p>Dias</p></div>
+      <div class="counter-box"><span id="c-hours">0</span><p>Horas</p></div>
+      <div class="counter-box"><span id="c-mins">0</span><p>Minutos</p></div>
+      <div class="counter-box"><span id="c-secs">0</span><p>Segundos</p></div>
+    </div>
+
     <!-- Foto Principal -->
     <div class="hero-image">
       <img src="RAFA.jpg" alt="Nossa Foto Especial">
     </div>
 
-    <!-- Mensagem Inicial -->
     <div class="message glass-panel">
       <p>Feliz dia dos namorados, meu amor. Eu te amo muito.</p>
-      <p>Hoje queria falar de você, que a cada dia me enche mais de orgulho e amor. Queria falar de como você era uma menina cheia de sonhos: de viajar, ser psicóloga, ser amorosa, e de tudo que estamos construindo juntos.</p>
+      <p>Hoje queria falar de você, que cada vez melhora. Queria falar um pouco do passado, de como você era uma menina cheia de sonhos: de viajar, ser psicóloga, ser amorosa, e muitas outras coisas. Mas nesses três pontos queria me focar:</p>
     </div>
 
-    <!-- Linha do Tempo (Transformando seu texto em experiência) -->
+    <!-- Linha do Tempo e Passaporte -->
     <div class="timeline">
       <div class="timeline-item glass-panel">
-        <h3>Nosso Passado</h3>
-        <p>O começo de tudo. O amor que construímos e que cresce a cada dia. Você sempre fez de tudo para melhorar por nós, e cada pequena coisa que você faz é incrivelmente importante pra mim.</p>
+        <h3>Passado (e presente, e futuro)</h3>
+        <p>O amor que construímos e que cresce a cada dia. Você faz de tudo para melhorar por nós. Por isso eu te amo demais. Cada coisa que você faz é muito importante pra mim.</p>
       </div>
       
       <div class="timeline-item glass-panel">
-        <h3>Seu Presente</h3>
-        <p>Ser psicóloga. Isso já é realidade! De uma simples palestra com os amigos para sua primeira consulta com um paciente. Hoje é real, é lindo de ver, e sei que você vai brilhar e melhorar todos os dias.</p>
+        <h3>Presente</h3>
+        <p>Ser psicóloga. Isso já é realidade! De uma simples palestra com os amigos para sua primeira consulta com um paciente. Hoje é real e vai melhorar todo dia.</p>
       </div>
 
-      <div class="timeline-item glass-panel">
-        <h3>Nosso Futuro</h3>
-        <p>Uma menina que já viajou o país e que, logo logo, vai conhecer o mundo todo. Pode parecer futuro agora, mas com certeza vai se tornar a nossa realidade, e estarei do seu lado em cada carimbo novo no passaporte.</p>
+      <div class="timeline-item glass-panel" style="border: none; background: transparent; box-shadow: none;">
+        <h3>Futuro</h3>
+        <p>Uma menina que já viajou o país e logo vai conhecer o mundo. Pode parecer futuro, mas com certeza vai se tornar realidade. E para provar isso:</p>
+        
+        <!-- 3. PASSAGEM AÉREA -->
+        <div class="boarding-pass">
+          <div class="bp-header">
+            <span>AMOR AIRLINES</span>
+            <span>BOARDING PASS</span>
+          </div>
+          <div class="bp-body">
+            <div class="bp-route">
+              <h2>AQUI</h2>
+              <p>Nossa Casa</p>
+            </div>
+            <div class="bp-icon">✈️</div>
+            <div class="bp-route">
+              <h2>MUNDO</h2>
+              <p>Todos os Destinos</p>
+            </div>
+          </div>
+          <div class="bp-details">
+            <p><strong>PASSAGEIRA:</strong> A futura melhor psicóloga</p>
+            <p><strong>VÔO:</strong> Ilimitado &nbsp;&nbsp; <strong>CLASSE:</strong> Primeira (Sempre)</p>
+            <p><strong>DATA:</strong> O resto de nossas vidas</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Cartões Reveláveis com Novas Mensagens -->
-    <h2 style="font-family: 'Dancing Script', cursive; font-size: 3em; color: #ff8fb3; margin-top: 40px; text-align: center;">Por que eu te amo...</h2>
+    <!-- O MAPA DOS NOSSOS SONHOS -->
+    <div class="map-section">
+      <h2 class="map-title">O Mapa dos Nossos Sonhos</h2>
+      <p style="color: #ffb6c1; margin-bottom: 10px;">Passe o dedo sobre os marcadores para descobrir o que o futuro nos reserva.</p>
+      <div class="map-container glass-panel">
+        <!-- Pin: Estados Unidos / Nova York -->
+        <div class="pin" style="top: 30%; left: 22%;">📍
+          <span class="tooltip"><strong>Nova York 🗽</strong><br>Um passeio romântico de mãos dadas no Central Park.</span>
+        </div>
+        <!-- Pin: França / Paris -->
+        <div class="pin" style="top: 28%; left: 48%;">📍
+          <span class="tooltip"><strong>Paris 🥐</strong><br>Tomar café da manhã juntos olhando a Torre Eiffel.</span>
+        </div>
+        <!-- Pin: Itália -->
+        <div class="pin" style="top: 32%; left: 52%;">📍
+          <span class="tooltip"><strong>Itália 🍕</strong><br>Comer a verdadeira pizza italiana e dividir uma garrafa de vinho.</span>
+        </div>
+        <!-- Pin: Maldivas -->
+        <div class="pin" style="top: 55%; left: 68%;">📍
+          <span class="tooltip"><strong>Maldivas 🏝️</strong><br>Relaxar na água cristalina, esquecer do mundo e focar só na gente.</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="font-family: 'Dancing Script', cursive; font-size: 3em; color: #ff8fb3; margin-top: 40px; text-align: center;">Nossas Memórias</h2>
     
     <div class="cards-container">
-      <!-- Cartão 1 -->
       <div class="flip-card">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <!-- Substitua por outra foto de vocês -->
             <img src="foto2.jpg" alt="Foto 2">
-            <h3>Pela sua dedicação</h3>
+            <h3>Nossa Sintonia</h3>
           </div>
           <div class="flip-card-back">
-            <p>"Admiro profundamente a mulher incrível e a profissional dedicada que você está se tornando. Ver você alcançar seus sonhos de cuidar das pessoas me faz te amar e te admirar ainda mais todos os dias."</p>
+            <p>"A cada momento que passamos juntos, tenho mais certeza de que você é a pessoa certa pra mim."</p>
           </div>
         </div>
       </div>
-
-      <!-- Cartão 2 -->
       <div class="flip-card">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <!-- Substitua por outra foto de vocês -->
             <img src="foto3.jpg" alt="Foto 3">
-            <h3>Pela nossa parceria</h3>
+            <h3>Seu Sorriso</h3>
           </div>
           <div class="flip-card-back">
-            <p>"Não importa para quais lugares incríveis nós vamos viajar no futuro, meu lugar favorito no mundo sempre será de mãos dadas com você. Você é o meu lar."</p>
+            <p>"O seu sorriso é o meu destino favorito, não importa pra que lugar do mundo a gente viaje."</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Cartão 3 -->
-      <div class="flip-card">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <!-- Substitua por outra foto de vocês -->
-            <img src="foto4.jpg" alt="Foto 4">
-            <h3>Pelo que somos</h3>
-          </div>
-          <div class="flip-card-back">
-            <p>"Amo cada pequeno detalhe seu. O seu sorriso, a sua forma amorosa de ver o mundo e a maneira única como você cuida da nossa relação. Você me faz querer ser a minha melhor versão."</p>
-          </div>
-        </div>
-      </div>
+    <!-- 4. BOTÃO GERADOR DE FRASES -->
+    <div class="generator-section glass-panel">
+      <button class="love-btn" onclick="generateReason()">❤️ Clique aqui para descobrir por que eu te amo ❤️</button>
+      <p id="reason-display"></p>
     </div>
 
     <div class="message glass-panel" style="text-align: center; margin-top: 0;">
-      <p>Queria te mostrar todo esse amor de uma forma simples, mas de todo o meu coração.</p>
-      <div class="signature">Eu te amo muito, be! ❤️<br>A.E.</div>
+      <p>Queria te mostrar isso de uma forma simples. Tudo isso é pra você.</p>
+      <div class="signature">Eu te amo muito, be! ❤️<br>A.E. ❤️</div>
     </div>
 
     <footer>
-      Feito com muito amor 💕
+      Feito com amor 💕
     </footer>
 
   </div>
 
-  <!-- Script para os corações caindo e a música -->
   <script>
-    // Configuração da Música
-    const music = document.getElementById("bgMusic");
-    const toggleBtn = document.getElementById("musicToggle");
-    let isPlaying = false;
+    /* =========================================
+       LÓGICA DO ENVELOPE E MÚSICA
+       ========================================= */
+    function openEnvelope() {
+      const envelope = document.getElementById("envelope-screen");
+      const mainContent = document.getElementById("main-content");
+      const music = document.getElementById("bgMusic");
 
-    function toggleMusic() {
-      if (isPlaying) {
-        music.pause();
-        toggleBtn.innerHTML = "▶️";
-      } else {
-        music.play();
-        toggleBtn.innerHTML = "⏸️";
-      }
-      isPlaying = !isPlaying;
+      envelope.classList.add("hide-envelope");
+      
+      setTimeout(() => {
+        envelope.style.display = "none";
+        mainContent.style.display = "flex";
+        startCounter();
+      }, 800);
+
+      music.play().catch(error => console.log("Música bloqueada pelo navegador", error));
     }
 
-    // Gerador de Corações Flutuantes
+    /* =========================================
+       LÓGICA DO CONTADOR (Desde 23/11/2017)
+       ========================================= */
+    function startCounter() {
+      const startDate = new Date("2017-11-23T00:00:00");
+
+      setInterval(() => {
+        const now = new Date();
+        let diff = now - startDate;
+
+        const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const years = Math.floor(daysTotal / 365.25);
+        const months = Math.floor((daysTotal % 365.25) / 30.4375);
+        const days = Math.floor((daysTotal % 365.25) % 30.4375);
+        
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / 1000 / 60) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+
+        document.getElementById("c-years").innerText = years;
+        document.getElementById("c-months").innerText = months;
+        document.getElementById("c-days").innerText = days;
+        document.getElementById("c-hours").innerText = hours;
+        document.getElementById("c-mins").innerText = mins;
+        document.getElementById("c-secs").innerText = secs;
+      }, 1000);
+    }
+
+    /* =========================================
+       LÓGICA DO GERADOR DE MOTIVOS
+       ========================================= */
+    const reasons = [
+      "Porque você vai ser a melhor psicóloga que esse mundo já viu.",
+      "Pela forma carinhosa como você cuida de mim e da nossa relação.",
+      "Porque eu mal posso esperar para viajar o mundo inteiro de mãos dadas com você.",
+      "Porque você faz de tudo para melhorar por nós todos os dias.",
+      "Pelo seu sorriso que ilumina até os meus piores dias.",
+      "Porque você era uma menina cheia de sonhos, e ver você realizá-los é minha maior alegria.",
+      "Porque desde aquele dia 23 de novembro, minha vida ganhou muito mais cor.",
+      "Porque você me entende só com um olhar.",
+      "Porque você é meu porto seguro e minha maior aventura ao mesmo tempo."
+    ];
+
+    function generateReason() {
+      const display = document.getElementById("reason-display");
+      display.style.opacity = 0; 
+      
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * reasons.length);
+        display.innerText = `"${reasons[randomIndex]}"`;
+        display.style.opacity = 1; 
+      }, 300);
+    }
+
+    /* =========================================
+       GERADOR DE CORAÇÕES FLUTUANTES
+       ========================================= */
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
       heart.innerHTML = "❤️";
-      
-      // Posição horizontal aleatória
       heart.style.left = Math.random() * 100 + "vw";
       
-      // Tamanho e duração aleatórios
       const size = Math.random() * 1.5 + 0.5;
       heart.style.transform = `scale(${size})`;
-      heart.style.animationDuration = Math.random() * 3 + 4 + "s"; // entre 4 e 7 segundos
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
       
       document.body.appendChild(heart);
       
-      // Remove o coração depois que ele cai
       setTimeout(() => {
         heart.remove();
       }, 7000);
     }
-
-    // Cria um coração novo a cada 400 milissegundos
     setInterval(createHeart, 400);
+
   </script>
 
 </body>
