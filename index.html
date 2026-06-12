@@ -2,85 +2,421 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Feliz Aniversário, Meu Amor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feliz Dia dos Namorados, Meu Amor</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #1f1f1f;
+      padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #1a0b14, #4a0e2e, #2e081c, #5c1236);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
     }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Chuva de Corações */
+    .heart {
+      position: absolute;
+      top: -10vh;
+      font-size: 1.5rem;
+      color: rgba(255, 111, 145, 0.6);
+      animation: fall linear infinite;
+      z-index: 0;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* Container Principal para ficar acima dos corações */
+    .content-wrapper {
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
     header {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 60px;
+      margin-bottom: 20px;
+      animation: fadeInDown 1.5s ease;
     }
     header h1 {
-      font-size: 2.5em;
-      color: #ff6f91;
+      font-family: 'Dancing Script', cursive;
+      font-size: 4.5em;
+      color: #ff8fb3;
+      text-shadow: 2px 2px 10px rgba(255, 111, 145, 0.5);
     }
-    .image-container {
-      margin-top: 30px;
-      max-width: 90%;
+    header p {
+      font-size: 1.2em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffb6c1;
     }
-    .image-container img {
-      width: 100%;
+
+    /* Efeito Glassmorphism Global */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      border-radius: 20px;
+    }
+
+    /* Galeria Principal */
+    .hero-image {
+      margin: 20px;
+      width: 90%;
       max-width: 600px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 111, 145, 0.4);
+      animation: fadeIn 2s ease;
     }
+    .hero-image img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: transform 0.4s ease;
+    }
+    .hero-image img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Mensagem Principal */
     .message {
       margin: 40px 20px;
       max-width: 800px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 25px;
-      border-radius: 10px;
+      padding: 40px;
       line-height: 1.8;
-      font-size: 1.1em;
+      font-size: 1.15em;
+      text-align: justify;
     }
     .signature {
-      margin-top: 20px;
-      font-weight: bold;
-      font-style: italic;
+      margin-top: 40px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.2em;
+      text-align: right;
       color: #ffb6c1;
     }
+
+    /* Linha do Tempo Interativa */
+    .timeline {
+      width: 90%;
+      max-width: 800px;
+      margin: 50px 0;
+      border-left: 4px solid #ff6f91;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .timeline-item {
+      position: relative;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    .timeline-item:hover {
+      transform: translateX(10px);
+      background: rgba(255, 111, 145, 0.1);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 25px;
+      width: 16px;
+      height: 16px;
+      background: #ff8fb3;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ff8fb3;
+    }
+    .timeline-item h3 {
+      color: #ff8fb3;
+      margin-bottom: 10px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2em;
+    }
+
+    /* Cartões Interativos (Flip Cards) com Novas Mensagens */
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      width: 90%;
+      max-width: 1000px;
+      margin: 50px 0;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 300px;
+      height: 350px;
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .flip-card-front {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .flip-card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      opacity: 0.8;
+    }
+    .flip-card-front h3 {
+      position: absolute;
+      bottom: 20px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8em;
+    }
+    .flip-card-back {
+      background: linear-gradient(135deg, #ff6f91, #ff477e);
+      color: white;
+      transform: rotateY(180deg);
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    /* Botão de Música Fixo */
+    .music-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 111, 145, 0.6);
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .music-btn:hover {
+      transform: scale(1.1);
+    }
+
     footer {
-      margin: 40px 0 20px 0;
-      font-size: 0.9em;
-      color: #888;
+      margin: 40px 0 30px 0;
+      color: rgba(255,255,255,0.6);
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 3em; }
+      .message { padding: 25px; }
+      .timeline { width: 95%; margin-left: 10px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Meu Amor 💖</h1>
-    <p>Feliz aniversário!</p>
-  </header>
 
-  <div class="image-container">
-    <img src="RAFA.jpg" alt="Foto do casal">
+  <!-- Música de fundo -->
+  <audio id="bgMusic" loop>
+    <source src="sua-musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="music-btn" id="musicToggle" onclick="toggleMusic()">▶️</button>
+
+  <div class="content-wrapper">
+    
+    <header>
+      <h1>Meu Amor</h1>
+      <p>Feliz Dia dos Namorados</p>
+    </header>
+
+    <!-- Foto Principal -->
+    <div class="hero-image">
+      <img src="RAFA.jpg" alt="Nossa Foto Especial">
+    </div>
+
+    <!-- Mensagem Inicial -->
+    <div class="message glass-panel">
+      <p>Feliz dia dos namorados, meu amor. Eu te amo muito.</p>
+      <p>Hoje queria falar de você, que a cada dia me enche mais de orgulho e amor. Queria falar de como você era uma menina cheia de sonhos: de viajar, ser psicóloga, ser amorosa, e de tudo que estamos construindo juntos.</p>
+    </div>
+
+    <!-- Linha do Tempo (Transformando seu texto em experiência) -->
+    <div class="timeline">
+      <div class="timeline-item glass-panel">
+        <h3>Nosso Passado</h3>
+        <p>O começo de tudo. O amor que construímos e que cresce a cada dia. Você sempre fez de tudo para melhorar por nós, e cada pequena coisa que você faz é incrivelmente importante pra mim.</p>
+      </div>
+      
+      <div class="timeline-item glass-panel">
+        <h3>Seu Presente</h3>
+        <p>Ser psicóloga. Isso já é realidade! De uma simples palestra com os amigos para sua primeira consulta com um paciente. Hoje é real, é lindo de ver, e sei que você vai brilhar e melhorar todos os dias.</p>
+      </div>
+
+      <div class="timeline-item glass-panel">
+        <h3>Nosso Futuro</h3>
+        <p>Uma menina que já viajou o país e que, logo logo, vai conhecer o mundo todo. Pode parecer futuro agora, mas com certeza vai se tornar a nossa realidade, e estarei do seu lado em cada carimbo novo no passaporte.</p>
+      </div>
+    </div>
+
+    <!-- Cartões Reveláveis com Novas Mensagens -->
+    <h2 style="font-family: 'Dancing Script', cursive; font-size: 3em; color: #ff8fb3; margin-top: 40px; text-align: center;">Por que eu te amo...</h2>
+    
+    <div class="cards-container">
+      <!-- Cartão 1 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <!-- Substitua por outra foto de vocês -->
+            <img src="foto2.jpg" alt="Foto 2">
+            <h3>Pela sua dedicação</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>"Admiro profundamente a mulher incrível e a profissional dedicada que você está se tornando. Ver você alcançar seus sonhos de cuidar das pessoas me faz te amar e te admirar ainda mais todos os dias."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cartão 2 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <!-- Substitua por outra foto de vocês -->
+            <img src="foto3.jpg" alt="Foto 3">
+            <h3>Pela nossa parceria</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>"Não importa para quais lugares incríveis nós vamos viajar no futuro, meu lugar favorito no mundo sempre será de mãos dadas com você. Você é o meu lar."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cartão 3 -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <!-- Substitua por outra foto de vocês -->
+            <img src="foto4.jpg" alt="Foto 4">
+            <h3>Pelo que somos</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>"Amo cada pequeno detalhe seu. O seu sorriso, a sua forma amorosa de ver o mundo e a maneira única como você cuida da nossa relação. Você me faz querer ser a minha melhor versão."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message glass-panel" style="text-align: center; margin-top: 0;">
+      <p>Queria te mostrar todo esse amor de uma forma simples, mas de todo o meu coração.</p>
+      <div class="signature">Eu te amo muito, be! ❤️<br>A.E.</div>
+    </div>
+
+    <footer>
+      Feito com muito amor 💕
+    </footer>
+
   </div>
 
-  <div class="message">
-    <p>Feliz aniversário, meu amor. Eu te amo muito.</p>
+  <!-- Script para os corações caindo e a música -->
+  <script>
+    // Configuração da Música
+    const music = document.getElementById("bgMusic");
+    const toggleBtn = document.getElementById("musicToggle");
+    let isPlaying = false;
 
-    <p>Hoje queria falar de você, que cada vez melhora. Queria falar um pouco do passado, de como você era uma menina cheia de sonhos: de viajar, ser psicóloga, ser amorosa, e muitas outras coisas. Mas nesses três pontos queria me focar:</p>
+    function toggleMusic() {
+      if (isPlaying) {
+        music.pause();
+        toggleBtn.innerHTML = "▶️";
+      } else {
+        music.play();
+        toggleBtn.innerHTML = "⏸️";
+      }
+      isPlaying = !isPlaying;
+    }
 
-    <p><strong>Futuro</strong>: uma menina que já viajou o país e logo vai conhecer o mundo. Pode parecer futuro, mas com certeza vai se tornar realidade.</p>
+    // Gerador de Corações Flutuantes
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      
+      // Posição horizontal aleatória
+      heart.style.left = Math.random() * 100 + "vw";
+      
+      // Tamanho e duração aleatórios
+      const size = Math.random() * 1.5 + 0.5;
+      heart.style.transform = `scale(${size})`;
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s"; // entre 4 e 7 segundos
+      
+      document.body.appendChild(heart);
+      
+      // Remove o coração depois que ele cai
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
 
-    <p><strong>Presente</strong>: ser psicóloga. Isso já é realidade! De uma simples palestra com os amigos para sua primeira consulta com um paciente. Hoje é real e vai melhorar todo dia.</p>
+    // Cria um coração novo a cada 400 milissegundos
+    setInterval(createHeart, 400);
+  </script>
 
-    <p><strong>Passado</strong> (e presente, e futuro): o amor que construímos e que cresce a cada dia. Você faz de tudo para melhorar por nós. Por isso eu te amo demais. Cada coisa que você faz é muito importante pra mim, e queria te mostrar isso de uma forma simples.</p>
-
-    <p class="signature">Eu te amo muito, be!❤️<br>A.E.❤️</p>
-  </div>
-
-  <footer>
-    Feito com amor 💕
-  </footer>
 </body>
 </html>
